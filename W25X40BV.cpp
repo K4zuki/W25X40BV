@@ -11,7 +11,7 @@ W25X40BV::W25X40BV(PinName mosi, PinName miso, PinName sclk, PinName cs) : _spi(
 
 
 // READING
-int W25X40BV::read(int addr) {
+int W25X40BV::readByte(int addr) {
     chipEnable();
     _spi.write(R_INST);
     _spi.write((addr & ADDR_BMASK2) >> ADDR_BSHIFT2);
@@ -21,7 +21,7 @@ int W25X40BV::read(int addr) {
     chipDisable();
     return response;
 }
-int W25X40BV::read(int a2, int a1, int a0) {
+int W25X40BV::readByte(int a2, int a1, int a0) {
    chipEnable();
    _spi.write(R_INST);
    _spi.write(a2);
@@ -31,10 +31,21 @@ int W25X40BV::read(int a2, int a1, int a0) {
     chipDisable();
     return response;
 }
-
+void W25X40BV::read(int addr, char* buf, int count) {
+    if (count < 1)
+        return;
+    chipEnable();
+    _spi.write(R_INST);
+    _spi.write((addr & ADDR_BMASK2) >> ADDR_BSHIFT2);
+    _spi.write((addr & ADDR_BMASK1) >> ADDR_BSHIFT1);
+    _spi.write((addr & ADDR_BMASK0) >> ADDR_BSHIFT0);
+    for (int i = 0; i < count; i++)
+        buf[i] =  _spi.write(DUMMY_ADDR);
+    chipDisable();
+}
 
 // WRITING
-void W25X40BV::write(int addr, int data) {
+void W25X40BV::writeByte(int addr, int data) {
     writeEnable();
     chipEnable();
     _spi.write(W_INST);
@@ -46,7 +57,7 @@ void W25X40BV::write(int addr, int data) {
     writeDisable();
     wait(WAIT_TIME);
 }
-void W25X40BV::write(int a2, int a1, int a0, int data) {
+void W25X40BV::writeByte(int a2, int a1, int a0, int data) {
     writeEnable();
     chipEnable();
     _spi.write(W_INST);
@@ -55,10 +66,24 @@ void W25X40BV::write(int a2, int a1, int a0, int data) {
     _spi.write(a0);
     _spi.write(data);
     chipDisable();
-     writeDisable();
-     wait(WAIT_TIME);
+    writeDisable();
+    wait(WAIT_TIME);
 }
-
+void W25X40BV::write(int addr, char* buf, int count) {
+    if (count < 1)
+        return;
+    writeEnable();
+    chipEnable();
+    _spi.write(W_INST);
+    _spi.write((addr & ADDR_BMASK2) >> ADDR_BSHIFT2);
+    _spi.write((addr & ADDR_BMASK1) >> ADDR_BSHIFT1);
+    _spi.write((addr & ADDR_BMASK0) >> ADDR_BSHIFT0);
+    for (int i = 0; i < count; i++)
+        _spi.write(buf[i]);
+    chipDisable();
+    writeDisable();
+    wait(WAIT_TIME);
+}
 
 //ERASING
 void W25X40BV::chipErase() {

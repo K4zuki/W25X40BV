@@ -30,11 +30,13 @@ class W25X40BV {
 public:
     W25X40BV(PinName mosi, PinName miso, PinName sclk, PinName cs);
     
-    int read(int addr);                             // takes a 24-bit (3 bytes) address and returns the data (1 byte) at that location
-    int read(int a2, int a1, int a0);               // takes the address in 3 separate bytes A[23,16], A[15,8], A[7,0]
+    int readByte(int addr);                             // takes a 24-bit (3 bytes) address and returns the data (1 byte) at that location
+    int readByte(int a2, int a1, int a0);               // takes the address in 3 separate bytes A[23,16], A[15,8], A[7,0]
+    void read(int addr, char* buf, int count);          // takes a 24-but address, reads count bytes, and stores results in buf
     
-    void write(int addr, int data);                 // takes a 24-bit (3 bytes) address and a byte of data to write at that location
-    void write(int a2, int a1, int a0, int data);   // takes the address in 3 separate bytes A[23,16], A[15,8], A[7,0]
+    void writeByte(int addr, int data);                 // takes a 24-bit (3 bytes) address and a byte of data to write at that location
+    void writeByte(int a2, int a1, int a0, int data);   // takes the address in 3 separate bytes A[23,16], A[15,8], A[7,0]
+    void write(int addr, char* buf, int count);         // write count bytes of data from buf to memory, starting at addr  
     
     void chipErase();                               // erase all data on chip
     
