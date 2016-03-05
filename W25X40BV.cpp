@@ -56,7 +56,7 @@ void W25X40BV::writeByte(uint32_t addr, uint32_t data) {
     this->write(data);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait_us(10*WAIT_TIME);
 }
 void W25X40BV::writeByte(uint32_t a2, uint32_t a1, uint32_t a0, uint32_t data) {
     writeEnable();
@@ -68,7 +68,7 @@ void W25X40BV::writeByte(uint32_t a2, uint32_t a1, uint32_t a0, uint32_t data) {
     this->write(data);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait_us(10*WAIT_TIME);
 }
 void W25X40BV::writeStream(uint32_t addr, uint8_t* buf, uint32_t count) {
     if (count < 1)
@@ -83,7 +83,7 @@ void W25X40BV::writeStream(uint32_t addr, uint8_t* buf, uint32_t count) {
         this->write(buf[i]);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait_ms(10*WAIT_TIME);
 }
 
 //ERASING
@@ -96,7 +96,7 @@ void W25X40BV::pageErase(uint8_t page){
     this->write(DUMMY_ADDR);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait_ms(50*WAIT_TIME);
 }
 
 void W25X40BV::block4Erase(uint16_t block){
@@ -110,7 +110,7 @@ void W25X40BV::block4Erase(uint16_t block){
     this->write(DUMMY_ADDR);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait_ms(100*WAIT_TIME);
 }
 
 void W25X40BV::block32Erase(uint8_t block){
@@ -132,7 +132,7 @@ void W25X40BV::chipErase() {
     this->write(C_ERASE_INST);
     chipDisable();
     writeDisable();
-    wait(WAIT_TIME);
+    wait(3*WAIT_TIME);
 }
     
 
