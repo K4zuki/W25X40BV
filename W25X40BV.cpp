@@ -87,11 +87,12 @@ void W25X40BV::writeStream(uint32_t addr, uint8_t* buf, uint32_t count) {
 }
 
 //ERASING
-void W25X40BV::pageErase(uint8_t page){
+void W25X40BV::pageErase(uint16_t page){
+    int msb = page>>8;
     writeEnable();
     chipEnable();
-    this->write(C_ERASE_INST);
-    this->write(DUMMY_ADDR);
+    this->write(P_ERASE_INST);
+    this->write(msb);
     this->write((int)page);
     this->write(DUMMY_ADDR);
     chipDisable();

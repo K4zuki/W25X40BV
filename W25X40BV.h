@@ -60,7 +60,7 @@ public:
     void writeStream(uint32_t addr, uint8_t* buf, uint32_t count);
     
     //! erase a page data(256bytes) on chip
-    void pageErase(uint8_t page);
+    void pageErase(uint16_t page);
 
     /** erase a block data(4Kbytes) on chip
     * @param block block number 0x0000 - 0x001F
