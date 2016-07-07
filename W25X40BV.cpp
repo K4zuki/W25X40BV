@@ -82,8 +82,8 @@ void W25X40BV::writeStream(uint32_t addr, uint8_t* buf, uint32_t count) {
     for (uint32_t i = 0; i < count; i++)
         this->write(buf[i]);
     chipDisable();
-    writeDisable();
     wait_ms(10*WAIT_TIME);
+    writeDisable();
 }
 
 //ERASING
@@ -149,8 +149,11 @@ void W25X40BV::writeDisable() {
     chipDisable();
 }
 void W25X40BV::chipEnable() {
+    _cs.output();
     _cs = 0;
 }
 void W25X40BV::chipDisable() {
     _cs = 1;
+    _cs.input();
+    _cs.mode(PullNone);
 }
