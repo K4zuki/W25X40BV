@@ -21,7 +21,7 @@
 #define B32K_ERASE_INST     0x52
 
 #define DUMMY_ADDR      0xAA
-#define WAIT_TIME       1
+#define WAIT_TIME       2
 
 #define ADDR_BMASK2     0x001f0000
 #define ADDR_BMASK1     0x0000ff00
